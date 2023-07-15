@@ -8,6 +8,7 @@ If the subreddit is invalid or any error occurs, it returns an appropriate error
 import requests
 import sys
 
+
 def number_of_subscribers(subreddit):
     """
     Retrieves the number of subscribers for the given subreddit.
@@ -33,6 +34,7 @@ def number_of_subscribers(subreddit):
         return subscribers
     except (requests.exceptions.RequestException, KeyError):
         return "An error occurred while fetching subreddit data."
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
