@@ -1,6 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import requests
+import sys
 
 def number_of_subscribers(subreddit):
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
@@ -9,7 +10,20 @@ def number_of_subscribers(subreddit):
     try:
         response = requests.get(url, headers=headers)
         data = response.json()
+        if 'error' in data:
+            if data['error'] == 404:
+                return f"Subreddit '{subreddit}' does not exist."
+            else:
+                return "An error occurred while fetching subreddit data."
         subscribers = data['data']['subscribers']
         return subscribers
     except (requests.exceptions.RequestException, KeyError):
-        return 0
+        return "An error occurred while fetching subreddit data."
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print("Please pass an argument for the subreddit to search.")
+    else:
+        subreddit = sys.argv[1]
+        subscribers = number_of_subscribers(subreddit)
+        print(subscribers)
